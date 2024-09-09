@@ -1,1 +1,6 @@
+# Do not store build files, instead use CMake to create build outputs
 build/
+
+# Do not store soln files for debugging
+*.soln
+

@@ -1,10 +1,16 @@
-org 0x7C00
+org 0x0
 bits 16
 
 %define ENDL 0x0D, 0x0A
 
 start:
-    jmp main
+    ; print message
+    mov si, msg_hello
+    call puts
+
+.halt:
+    cli 
+    hlt
 
 ;
 ; Prints a string to the screen.
@@ -30,31 +36,6 @@ puts:
     pop si
     ret
 
-; Main method for the juos
-main:
-
-    ; setup data segment
-    mov ax, 0       ; can't write to ds/es directly
-    mov ds, ax      ; set ds to 0
-    mov es, ax      ; set es to 0
-
-    ; setup stack
-    mov ss, ax      ; stack segment is 0 sized
-    mov sp, 0x7C00  ; stack grows downwards
-
-    ; print message
-    mov si, msg_hello
-    call puts
-
-    hlt
-
-.halt:
-    jmp .halt
 
 ; DATA SECTION
-msg_hello: db 'Hello World!', ENDL, 0
-
-; $-$$ is the length of the program in bytes
-times 510 - ($-$$) db 0
-; Word AA55 expected by the BIOS in the first sector of the code
-dw 0AA55h
+msg_hello: db 'Hello World from JUOS KERNEL!', ENDL, 0
